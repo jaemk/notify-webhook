@@ -8,7 +8,7 @@ import subprocess
 import csv
 import io
 from datetime import datetime
-import simplejson as json
+import json
 from itertools import chain, repeat
 from collections import OrderedDict
 
