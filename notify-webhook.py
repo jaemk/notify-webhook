@@ -9,6 +9,7 @@ import csv
 import io
 from datetime import datetime
 import json
+import codecs
 from itertools import chain, repeat
 from collections import OrderedDict
 
@@ -283,7 +284,7 @@ def post(url, data):
     if POST_SECRET_TOKEN is not None:
         import hmac
         import hashlib
-        key_bytes = bytes(POST_SECRET_TOKEN, 'utf8')
+        key_bytes = codecs.decode(POST_SECRET_TOKEN, 'hex')
         post_bytes = postdata if type(postdata) == bytes else bytes(postdata, 'utf8')
         hmacobj = hmac.new(key_bytes, post_bytes, hashlib.sha1)
         signature = 'sha1=' + hmacobj.hexdigest()
