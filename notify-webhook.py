@@ -247,24 +247,27 @@ def make_json(old, new, ref):
             }
         }
 
+    def commit_info(rev):
+        return {'id': rev['id'],
+                'author': {'name': rev['name'], 'email': rev['email']},
+                'message': rev['message'],
+                'timestamp': rev['date'],
+                'added': rev['added'],
+                'removed': rev['removed'],
+                'modified': rev['modified']
+                }
+
+
     revisions = get_revisions(old, new)
     commits = []
     for r in revisions:
-        url = None
+        _commit = commit_info(r)
         if COMMIT_URL is not None:
-            url = COMMIT_URL % r['id']
-        commits.append({'id': r['id'],
-                        'author': {'name': r['name'], 'email': r['email']},
-                        'url': url,
-                        'message': r['message'],
-                        'timestamp': r['date'],
-                        'added': r['added'],
-                        'removed': r['removed'],
-                        'modified': r['modified']
-                        })
+            _commit['url'] = COMMIT_URL % r['id']
+        commits.append(_commit)
     data['commits'] = commits
     data['size'] = len(commits)
-    data['head_commit'] = get_revisions(old, new, True)
+    data['head_commit'] = commit_info(get_revisions(old, new, True))
 
     base_ref = get_base_ref(new, ref)
     if base_ref:
