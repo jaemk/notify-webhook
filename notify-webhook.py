@@ -283,7 +283,9 @@ def post(url, data):
     if POST_SECRET_TOKEN is not None:
         import hmac
         import hashlib
-        hmacobj = hmac.new(POST_SECRET_TOKEN, postdata, hashlib.sha1)
+        key_bytes = bytes(POST_SECRET_TOKEN, 'utf8')
+        post_bytes = postdata if type(postdata) == bytes else bytes(postdata, 'utf8')
+        hmacobj = hmac.new(key_bytes, post_bytes, hashlib.sha1)
         signature = 'sha1=' + hmacobj.hexdigest()
         headers['X-Hub-Signature'] = signature
 
