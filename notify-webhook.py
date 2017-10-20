@@ -289,7 +289,7 @@ def post(url, data):
         signature = 'sha1=' + hmacobj.hexdigest()
         headers['X-Hub-Signature'] = signature
 
-    request = urllib.request.Request(url, postdata, headers)
+    request = urllib.request.Request(url, postdata, headers, method='POST')
 
     # Default handler
     handler = urllib.request.HTTPHandler
